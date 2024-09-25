@@ -42,12 +42,23 @@ function useFetchDocumentLog({ documentLogId}: { documentLogId: number }) {
     setFetching(true)
 
     try {
+      console.log("Fetching document log")
       const response = await fetch(
         `/api/documentLogs/${documentLogId}`,
         { credentials: 'include' },
       )
-      documentLog.current = await response.json()
+      const result = await response.json()
+
+      if (response.status !== 200) {
+        throw new Error(result.message)
+      }
+
+      documentLog.current = result
+
+      setFetching(false)
+      return documentLog.current
     } catch (err) {
+      setFetching(false)
       const error = err as Error
       toast({
         title: 'Failed to fetch document log',
@@ -55,8 +66,6 @@ function useFetchDocumentLog({ documentLogId}: { documentLogId: number }) {
         variant: 'destructive',
       })
     }
-
-    setFetching(false)
   }, [documentLogId])
 
   return { fetching, fetchDocumentLog }
@@ -78,6 +87,8 @@ export function EvaluationResultInfo({
   const [selected, setSelected] = useState<MaybeDocumentLog>(null)
   const onClickOpen = useCallback(async () => {
     const documentLog = await fetchDocumentLog()
+
+    if (!documentLog) return
 
     setSelected(documentLog)
   }, [evaluationResult.documentLogId, fetchDocumentLog])
