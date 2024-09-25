@@ -12,6 +12,7 @@ export type CreateDocumentLogProps = {
     resolvedContent: string
     customIdentifier?: string
     duration: number
+    createdAt?: Date
   }
 }
 
@@ -24,6 +25,7 @@ export async function createDocumentLog(
       parameters,
       customIdentifier,
       duration,
+      createdAt,
     },
     commit,
   }: CreateDocumentLogProps,
@@ -40,6 +42,7 @@ export async function createDocumentLog(
         parameters,
         customIdentifier,
         duration,
+        createdAt,
       })
       .returning()
 
