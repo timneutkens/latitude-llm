@@ -1,10 +1,10 @@
 import { eq } from 'drizzle-orm'
-import { NotFoundError, Result, TypedResult } from '../../lib'
+
 import { database } from '../../client'
+import { NotFoundError, Result, TypedResult } from '../../lib'
 import { DocumentLogWithMetadata } from '../../repositories/documentLogsRepository'
-import {
-  createDocumentLogQuery,
-} from './_createDocumentLogQuery'
+import { createDocumentLogQuery } from './_createDocumentLogQuery'
+
 export async function fetchDocumentLogWithMetadata(
   {
     workspaceId,
@@ -20,7 +20,9 @@ export async function fetchDocumentLogWithMetadata(
   const documentLog = logs[0]
 
   if (!documentLog) {
-    return Result.error(new NotFoundError(`Document Log not found with ID: ${documentLogId}`))
+    return Result.error(
+      new NotFoundError(`Document Log not found with ID: ${documentLogId}`),
+    )
   }
 
   return Result.ok(documentLog)

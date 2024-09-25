@@ -71,7 +71,7 @@ const Icons = {
   externalLink: ExternalLink,
   pencil: Pencil,
   refresh: RefreshCcw,
-  arrowRight: ArrowRightIcon
+  arrowRight: ArrowRightIcon,
 }
 
 export type IconName = keyof typeof Icons

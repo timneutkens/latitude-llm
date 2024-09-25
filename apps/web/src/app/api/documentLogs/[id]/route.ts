@@ -1,9 +1,9 @@
 import { Workspace } from '@latitude-data/core/browser'
+import { database } from '@latitude-data/core/client'
+import { fetchDocumentLogWithMetadata } from '@latitude-data/core/services/documentLogs/fetchDocumentLogWithMetadata'
 import { authHandler } from '$/middlewares/authHandler'
 import { errorHandler } from '$/middlewares/errorHandler'
 import { NextRequest, NextResponse } from 'next/server'
-import { database } from '@latitude-data/core/client'
-import { fetchDocumentLogWithMetadata } from '@latitude-data/core/services/documentLogs/fetchDocumentLogWithMetadata'
 
 export const GET = errorHandler(
   authHandler(
@@ -26,10 +26,12 @@ export const GET = errorHandler(
         )
       }
 
-      const documentLog = await fetchDocumentLogWithMetadata({
-        workspaceId: workspace.id,
-        documentLogId: id },
-        database
+      const documentLog = await fetchDocumentLogWithMetadata(
+        {
+          workspaceId: workspace.id,
+          documentLogId: id,
+        },
+        database,
       ).then((res) => res.unwrap())
 
       return NextResponse.json(documentLog, { status: 200 })
